@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { Mic, Send, Sparkles } from 'lucide-react';
-import { ThemeToggle } from '@/components/ThemeToggle';
 import { Clock } from '@/components/Clock';
-import { ChatMessage } from '@/components/ChatMessage';
+import { ChatMessage } from '@/components/teamates/ChatMessage';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { quotes } from '@/data/bhagvad-gita';
 import { Message } from '@/types';
+import { Mic, Send, Sparkles } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 const API_KEY = "AIzaSyDdxS5w-Rqua9jEqnPB9B79HsNhUcsGKvw";
 
@@ -27,8 +27,9 @@ export default function Home() {
   const chatBoxRef = useRef<HTMLDivElement>(null);
   const recognition = useRef<any>(null);
 
+  // Ensure SpeechRecognition is only accessed on the client
   useEffect(() => {
-    if (!SpeechRecognition) {
+    if (!isBrowser || !SpeechRecognition) {
       console.warn("SpeechRecognition is not supported in this browser.");
       return;
     }

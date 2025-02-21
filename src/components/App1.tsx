@@ -1,49 +1,49 @@
 "use client";
-import { useState, useRef, useEffect, useCallback } from "react";
-import { Mic } from "lucide-react";
-import { ThemeToggle } from "./ThemeToggle";
-import { Clock } from "./Clock";
-import { ChatMessage } from "./ChatMessage";
 import { quotes } from "@/data/bhagvad-gita";
 import { Message } from "@/types";
+import { Mic } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Clock } from "./Clock";
+import { ChatMessage } from "./teamates/ChatMessage";
+import { ThemeToggle } from "./ThemeToggle";
 
 // Function to strip markdown formatting but preserve paragraph structure
 function stripMarkdown(text: string): string {
-  // Remove code blocks
-  text = text.replace(/```[\s\S]*?```/g, '');
-  
-  // Remove inline code
-  text = text.replace(/`([^`]+)`/g, '$1');
-  
-  // Remove headers
-  text = text.replace(/#{1,6}\s?([^\n]+)/g, '$1');
-  
-  // Remove bold/italic formatting
-  text = text.replace(/(\*\*|__)(.*?)\1/g, '$2');
-  text = text.replace(/(\*|_)(.*?)\1/g, '$2');
-  
-  // Replace bullet points with paragraph breaks
-  text = text.replace(/^\s*[-*+]\s+/gm, '\n');
-  
-  // Replace numbered lists with paragraph breaks
-  text = text.replace(/^\s*\d+\.\s+/gm, '\n');
-  
-  // Remove blockquotes
-  text = text.replace(/^\s*>\s+/gm, '');
-  
-  // Remove horizontal rules
-  text = text.replace(/^\s*[-*_]{3,}\s*$/gm, '');
-  
-  // Remove link formatting
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1');
-  
-  // Ensure proper paragraph separation
-  text = text.replace(/\n{3,}/g, '\n\n');
-  
-  // Ensure each point has its own paragraph
-  text = text.split('\n').map(line => line.trim()).join('\n\n');
-  
-  return text.trim();
+    // Remove code blocks
+    text = text.replace(/```[\s\S]*?```/g, '');
+
+    // Remove inline code
+    text = text.replace(/`([^`]+)`/g, '$1');
+
+    // Remove headers
+    text = text.replace(/#{1,6}\s?([^\n]+)/g, '$1');
+
+    // Remove bold/italic formatting
+    text = text.replace(/(\*\*|__)(.*?)\1/g, '$2');
+    text = text.replace(/(\*|_)(.*?)\1/g, '$2');
+
+    // Replace bullet points with paragraph breaks
+    text = text.replace(/^\s*[-*+]\s+/gm, '\n');
+
+    // Replace numbered lists with paragraph breaks
+    text = text.replace(/^\s*\d+\.\s+/gm, '\n');
+
+    // Remove blockquotes
+    text = text.replace(/^\s*>\s+/gm, '');
+
+    // Remove horizontal rules
+    text = text.replace(/^\s*[-*_]{3,}\s*$/gm, '');
+
+    // Remove link formatting
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1');
+
+    // Ensure proper paragraph separation
+    text = text.replace(/\n{3,}/g, '\n\n');
+
+    // Ensure each point has its own paragraph
+    text = text.split('\n').map(line => line.trim()).join('\n\n');
+
+    return text.trim();
 }
 
 const API_KEY = "AIzaSyDdxS5w-Rqua9jEqnPB9B79HsNhUcsGKvw";
@@ -87,13 +87,13 @@ function App() {
             // Initialize recognition only if it's not already initialized
             if (!recognition.current) {
                 recognition.current = new SpeechRecognition();
-                
+
                 // Only set properties if we successfully created the recognition instance
                 if (recognition.current) {
                     recognition.current.continuous = false;
                     recognition.current.lang = "en-US";
                     recognition.current.interimResults = false;
-                    
+
                     recognition.current.onresult = (event) => {
                         const transcript = event.results[0][0].transcript;
                         setInputValue(transcript);
@@ -158,10 +158,9 @@ function App() {
                             {
                                 parts: [
                                     {
-                                        text: `${message}\n\nPlease format your response with clear paragraph breaks after each point. If you're listing multiple points, make sure each point is on a new line with a blank line in between. Bhagavad Gita says: ${
-                                            quotes.find((q) => q.quote)?.quote ||
+                                        text: `${message}\n\nPlease format your response with clear paragraph breaks after each point. If you're listing multiple points, make sure each point is on a new line with a blank line in between. Bhagavad Gita says: ${quotes.find((q) => q.quote)?.quote ||
                                             "You have the right to work, but never to the fruit of work."
-                                        }`,
+                                            }`,
                                     },
                                 ],
                             },
@@ -177,9 +176,9 @@ function App() {
             );
 
             const data = await response.json();
-            const rawResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || 
+            const rawResponse = data.candidates?.[0]?.content?.parts?.[0]?.text ||
                 "Sorry, I couldn't understand that.";
-            
+
             // Process the response to remove markdown formatting but preserve paragraphs
             return stripMarkdown(rawResponse);
         } catch (error) {
@@ -222,17 +221,17 @@ function App() {
                         aria-label="Chat input"
                         disabled={isLoading}
                     />
-                    <button 
-                        id="mic-button" 
-                        onClick={toggleVoiceInput} 
-                        className={isListening ? "listening" : ""} 
+                    <button
+                        id="mic-button"
+                        onClick={toggleVoiceInput}
+                        className={isListening ? "listening" : ""}
                         aria-label="Voice input"
                         disabled={!SpeechRecognition || isLoading}
                     >
                         <Mic size={20} />
                     </button>
-                    <button 
-                        onClick={() => handleSendMessage(inputValue)} 
+                    <button
+                        onClick={() => handleSendMessage(inputValue)}
                         aria-label="Send message"
                         disabled={isLoading}
                     >
