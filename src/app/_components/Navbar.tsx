@@ -20,7 +20,7 @@ export default function Navbar({ className }: NavbarProps) {
             <div className="h-full"><img src="/loo.png" alt="" className="h-full" /></div>
             <div className="flex gap-4">
                 <GradientButton className="rounded-xl border-gray-500 border" link="/">Home</GradientButton>
-                <GradientButton className="rounded-xl border-gray-500 border" link='/doc-dashboard'>Zen Space</GradientButton>
+                {/* <GradientButton className="rounded-xl border-gray-500 border" link='/doc-dashboard'>Zen Space</GradientButton> */}
                 <GradientButton className="rounded-xl border-gray-500 border" link='/Sukku'>Sukku</GradientButton>
                 <GradientButton className="rounded-xl border-gray-500 border" link="/Bhagvat">AI Bhagvat</GradientButton>
                 <GradientButton className="rounded-xl border-gray-500 border" link="/social">Community</GradientButton>
