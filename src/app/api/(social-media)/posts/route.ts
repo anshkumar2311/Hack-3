@@ -1,29 +1,16 @@
 // app/api/posts/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { db as prisma } from '@/lib/db';
-import { currentUser } from '@clerk/nextjs/server';
-
 
 export async function GET(request: NextRequest) {
   try {
-    const user = await currentUser();
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-    const userId = (await prisma.user.findUnique({
-        where: { clerkId: user.id },
-        select: { id: true }
-    }))?.id;
     const searchParams = request.nextUrl.searchParams;
     const page = parseInt(searchParams.get('page') || '1');
     const pageSize = 10;
-    
+
     // Get total count for determining if there are more posts
     const totalPosts = await prisma.post.count();
-    
+
     const data = await prisma.post.findMany({
       include: {
         user: true,
@@ -50,7 +37,7 @@ export async function GET(request: NextRequest) {
       createdAt: post.createdAt.toISOString(),
       likesCount: post.likes.length,
       commentsCount: post.comments.length,
-      hasLiked: post.likes.some(like => like.userId === userId),
+      hasLiked: false, // Default to false since user auth is removed
       media: post.media
     }));
 
