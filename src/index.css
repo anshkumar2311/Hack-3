@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root[data-theme="light"] {
+  --bg-color: #f4f4f4;
+  --container-bg: white;
+  --text-color: #1a1a1a;
+  --input-bg: white;
+  --border-color: #ddd;
+  --bot-message-bg: #f0f2f5;
+  --user-message-gradient: linear-gradient(135deg, #ff3333, #ff6666);
+}
+
+:root[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --container-bg: #2d2d2d;
+  --text-color: #ffffff;
+  --input-bg: #3d3d3d;
+  --border-color: #404040;
+  --bot-message-bg: #404040;
+  --user-message-gradient: linear-gradient(135deg, #ff3333, #cc0000);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  margin: 0;
+  padding: 15px;
+}
+
+.chat-container {
+  @apply w-full max-w-[900px] h-[90vh] max-h-[800px] bg-opacity-95 rounded-lg shadow-lg overflow-hidden flex flex-col transition-all duration-300 ease-in-out mx-auto relative z-10;
+  background: var(--container-bg);
+}
+
+.chat-header {
+  @apply text-center p-4 border-b border-solid;
+  border-color: var(--border-color);
+  background: var(--container-bg);
+}
+
+.chat-header h1 {
+  @apply m-0 text-2xl font-semibold;
+  color: #ff3333;
+}
+
+.chat-header p {
+  @apply mt-1 opacity-70 text-sm;
+}
+
+.chat-box {
+  @apply flex-1 p-4 overflow-y-auto flex flex-col scroll-smooth;
+}
+
+.input-container {
+  @apply flex p-4 border-t border-solid;
+  border-color: var(--border-color);
+  background: var(--container-bg);
+}
+
+input {
+  @apply flex-1 px-4 py-3 rounded-full outline-none text-base transition-all duration-200 ease-in-out;
+  background: var(--input-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+input:focus {
+  @apply border-red-500 shadow-md;
+}
+
+button {
+  @apply ml-2 px-5 py-3 border-none rounded-full cursor-pointer transition-all duration-200 ease-in-out font-semibold;
+  background: #ff3333;
+  color: white;
+}
+
+button:hover {
+  @apply bg-red-400 transform -translate-y-0.5;
+}
+
+.user-message, .bot-message {
+  @apply p-3 my-2 rounded-2xl max-w-[80%] break-words animate-fadeIn;
+}
+
+.user-message {
+  @apply self-end rounded-br-sm;
+  background: var(--user-message-gradient);
+  color: white;
+}
+
+.bot-message {
+  @apply self-start rounded-bl-sm;
+  background: var(--bot-message-bg);
+  color: var(--text-color);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.video-background {
+  @apply fixed right-0 bottom-0 min-w-full min-h-full w-auto h-auto -z-10 opacity-30 object-cover;
+}
+
+#mic-button {
+  @apply w-12 h-12 rounded-full flex items-center justify-center;
+  background: var(--container-bg);
+  color: var(--text-color);
+}
+
+#mic-button.listening {
+  @apply bg-red-500 animate-pulse;
+}
+
+.theme-switch {
+  @apply fixed top-5 right-5 z-50;
+}
+
+#theme-toggle {
+  @apply w-10 h-10 rounded-full border-none cursor-pointer shadow-md flex items-center justify-center;
+  background: var(--container-bg);
+}
+
+.clock {
+  @apply text-sm opacity-80 mt-1;
+  font-family: "SF Mono", SFMono-Regular, Consolas, monospace;
+}
+
+@media (max-width: 768px) {
+  body {
+    @apply p-0;
+  }
+
+  .chat-container {
+    @apply h-screen max-h-none rounded-none m-0;
+  }
+
+  .chat-header {
+    @apply p-3;
+  }
+
+  .input-container {
+    @apply p-3;
+  }
+
+  input {
+    @apply text-sm px-4 py-3;
+  }
+
+  button {
+    @apply px-4 py-3;
+  }
+
+  .user-message, .bot-message {
+    @apply max-w-[90%] p-3 my-1;
+  }
+}
+
+@media (max-height: 600px) {
+  .chat-container {
+    @apply h-screen max-h-none m-0;
+  }
+
+  .chat-header {
+    @apply p-2;
+  }
+
+  .chat-header h1 {
+    @apply text-xl;
+  }
+
+  .chat-header p {
+    @apply text-xs;
+  }
+}

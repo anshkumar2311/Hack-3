@@ -1,0 +1,106 @@
+{
+    "Anxiety": {
+        "description": "A mental health condition characterized by persistent feelings of worry and fear that interfere with daily activities.",
+        "videos": [
+            {
+                "id": "anxiety-1",
+                "title": "Understanding Anxiety: Causes and Symptoms",
+                "description": "Learn about what anxiety is, its common causes, and how to recognize its symptoms.",
+                "thumbnailUrl": "/videos/anxiety-1-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/anxiety-video-1"
+            },
+            {
+                "id": "anxiety-2",
+                "title": "Coping Strategies for Anxiety",
+                "description": "Practical techniques and strategies to manage anxiety in daily life.",
+                "thumbnailUrl": "/videos/anxiety-2-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/anxiety-video-2"
+            },
+            {
+                "id": "anxiety-3",
+                "title": "Anxiety Treatment Options",
+                "description": "Overview of different treatment approaches for anxiety disorders.",
+                "thumbnailUrl": "/videos/anxiety-3-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/anxiety-video-3"
+            }
+        ]
+    },
+    "Depression": {
+        "description": "A mood disorder causing persistent feelings of sadness and loss of interest that affects how you feel, think and behave.",
+        "videos": [
+            {
+                "id": "depression-1",
+                "title": "What is Depression?",
+                "description": "Understanding depression, its symptoms, and impact on daily life.",
+                "thumbnailUrl": "/videos/depression-1-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/depression-video-1"
+            },
+            {
+                "id": "depression-2",
+                "title": "Managing Depression",
+                "description": "Effective strategies for managing depression symptoms.",
+                "thumbnailUrl": "/videos/depression-2-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/depression-video-2"
+            },
+            {
+                "id": "depression-3",
+                "title": "Depression Treatment Options",
+                "description": "Overview of available treatments for depression.",
+                "thumbnailUrl": "/videos/depression-3-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/depression-video-3"
+            }
+        ]
+    },
+    "Bipolar": {
+        "description": "A mental health condition that causes extreme mood swings including emotional highs (mania) and lows (depression).",
+        "videos": [
+            {
+                "id": "bipolar-1",
+                "title": "Understanding Bipolar Disorder",
+                "description": "Learn about the basics of bipolar disorder and its types.",
+                "thumbnailUrl": "/videos/bipolar-1-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/bipolar-video-1"
+            },
+            {
+                "id": "bipolar-2",
+                "title": "Living with Bipolar Disorder",
+                "description": "Real-life experiences and coping strategies.",
+                "thumbnailUrl": "/videos/bipolar-2-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/bipolar-video-2"
+            },
+            {
+                "id": "bipolar-3",
+                "title": "Bipolar Treatment Approaches",
+                "description": "Different treatment options for managing bipolar disorder.",
+                "thumbnailUrl": "/videos/bipolar-3-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/bipolar-video-3"
+            }
+        ]
+    },
+    "Schizophrenia": {
+        "description": "A serious mental disorder in which people interpret reality abnormally, affecting thinking, behavior and emotions.",
+        "videos": [
+            {
+                "id": "schizo-1",
+                "title": "Understanding Schizophrenia",
+                "description": "Learn about the symptoms and causes of schizophrenia.",
+                "thumbnailUrl": "/videos/schizo-1-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/schizo-video-1"
+            },
+            {
+                "id": "schizo-2",
+                "title": "Living with Schizophrenia",
+                "description": "Personal experiences and daily management strategies.",
+                "thumbnailUrl": "/videos/schizo-2-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/schizo-video-2"
+            },
+            {
+                "id": "schizo-3",
+                "title": "Treatment Options for Schizophrenia",
+                "description": "Modern approaches to treating schizophrenia.",
+                "thumbnailUrl": "/videos/schizo-3-thumb.jpg",
+                "videoUrl": "https://www.youtube.com/embed/schizo-video-3"
+            }
+        ]
+    }
+}

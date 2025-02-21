@@ -1,0 +1,390 @@
+// This is your Prisma schema file
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  clerkId     String   @unique
+  isAnonymous Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  // User Information
+  age      Int?
+  gender   String?
+  username String? @unique
+  avatar   String?
+  bio      String? @db.Text
+
+  // Counter Fields
+  followersCount Int @default(0)
+  followingCount Int @default(0)
+  postsCount     Int @default(0)
+
+  // Relations - Medical
+  lifestyle      LifestyleInfo?
+  medicalHistory MedicalHistory[]
+  chatSessions   ChatSession[]
+
+  // Relations - Social
+  posts         Post[]
+  comments      Comment[]
+  likes         Like[]
+  commentLikes  CommentLike[]
+  followers     Follow[]       @relation("FollowingUser")
+  following     Follow[]       @relation("FollowedUser")
+  savedPosts    SavedPost[]
+  notifications Notification[]
+  dailyTasks    DailyTasks[]
+
+  // Relations - Journal
+  journal Journal[]
+
+  @@index([clerkId])
+  @@index([username])
+}
+
+model Doctor {
+  id          String   @id @default(uuid())
+  clerkId     String   @unique
+  name        String
+  isAvailable Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  speciality  String?
+  bio         String?  @db.Text
+  avatar      String?
+  isVerified  Boolean  @default(false)
+
+  // Counter Fields
+  postsCount        Int @default(0)
+  verifiedPostCount Int @default(0)
+
+  // Relations - Medical
+  chatSessions ChatSession[]
+  diagnostics  DiagnosticReport[]
+
+  // Relations - Social
+  posts         Post[]
+  comments      Comment[]
+  verifiedPosts PostVerification[]
+
+  @@index([clerkId])
+  @@index([name])
+  @@index([speciality])
+}
+
+model LifestyleInfo {
+  id            String   @id @default(uuid())
+  smoking       Boolean  @default(false)
+  alcohol       Boolean  @default(false)
+  exerciseLevel String
+  sleepHours    Int
+  dietType      String
+  stressLevel   String
+  otherHabit    String[]
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model MedicalHistory {
+  id          String   @id @default(uuid())
+  condition   String
+  diagnosedAt DateTime
+  treatment   String[]
+  notes       String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([condition])
+}
+
+model ChatSession {
+  id           String    @id @default(uuid())
+  startedAt    DateTime? // Changed to optional
+  endedAt      DateTime?
+  messageCount Int       @default(0)
+
+  userId           String
+  doctorId         String
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  doctor           Doctor            @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  messages         Message[]
+  DiagnosticReport DiagnosticReport?
+
+  @@index([userId])
+  @@index([doctorId])
+}
+
+model Message {
+  id         String     @id @default(uuid())
+  senderId   String
+  senderRole SenderRole
+  content    String     @db.Text
+  timestamp  DateTime   @default(now())
+
+  chatSessionId String
+  chatSession   ChatSession @relation(fields: [chatSessionId], references: [id], onDelete: Cascade)
+
+  @@index([chatSessionId])
+  @@index([senderId])
+  @@index([timestamp])
+}
+
+model DiagnosticReport {
+  id          String   @id @default(uuid())
+  generatedAt DateTime @default(now())
+  aiAnalysis  String   @db.Text
+  doctorNotes String?  @db.Text
+  isValidated Boolean  @default(false)
+
+  chatSessionId String      @unique
+  validatedById String
+  chatSession   ChatSession @relation(fields: [chatSessionId], references: [id], onDelete: Cascade)
+  validatedBy   Doctor      @relation(fields: [validatedById], references: [id], onDelete: Cascade)
+
+  @@index([validatedById])
+  @@index([generatedAt])
+}
+
+model Post {
+  id        String       @id @default(uuid())
+  title     String
+  content   String?      @db.Text
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  isPrivate Boolean      @default(false)
+  category  PostCategory
+
+  // Counter Fields
+  likesCount    Int @default(0)
+  commentsCount Int @default(0)
+  saveCount     Int @default(0)
+
+  // Relations
+  userId   String? // Optional if posted by doctor
+  doctorId String? // Optional if posted by user
+  user     User?   @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
+  doctor   Doctor? @relation(fields: [doctorId], references: [clerkId], onDelete: Cascade)
+
+  comments      Comment[]
+  likes         Like[]
+  savedBy       SavedPost[]
+  verifications PostVerification[]
+  media         String[]
+
+  @@index([userId])
+  @@index([doctorId])
+  @@index([category])
+  @@index([createdAt])
+}
+
+model PostMedia {
+  id     String    @id @default(uuid())
+  url    String
+  type   MediaType
+  postId String
+
+  @@index([postId])
+  @@index([type])
+}
+
+// Update the Comment model to include likes and replies
+model Comment {
+  id        String   @id @default(uuid())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Counter Fields
+  likesCount   Int @default(0)
+  repliesCount Int @default(0)
+
+  postId   String
+  userId   String? // Optional if commented by doctor
+  doctorId String? // Optional if commented by user
+
+  // New fields for nested replies
+  parentId String? // ID of parent comment if this is a reply
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[] @relation("CommentReplies")
+
+  post   Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  doctor Doctor? @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  // Add likes relation
+  likes CommentLike[]
+
+  @@index([postId])
+  @@index([userId])
+  @@index([doctorId])
+  @@index([parentId])
+  @@index([createdAt])
+}
+
+// New model for comment likes
+model CommentLike {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  commentId String
+  userId    String
+
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  postId String
+  userId String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model SavedPost {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  postId String
+  userId String
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model Follow {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  followerId  String
+  followingId String
+
+  follower  User @relation("FollowingUser", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("FollowedUser", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@index([createdAt])
+}
+
+model PostVerification {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  notes     String?  @db.Text
+
+  postId   String
+  doctorId String
+
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, doctorId])
+  @@index([postId])
+  @@index([doctorId])
+}
+
+model Notification {
+  id        String    @id @default(uuid())
+  type      String // CHAT_REQUEST, DIAGNOSTIC_READY, POST_LIKED, NEW_FOLLOWER, COMMENT
+  title     String
+  message   String    @db.Text
+  data      Json      @default("{}")
+  createdAt DateTime  @default(now())
+  readAt    DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+model DailyTasks {
+  id             String   @id @default(uuid())
+  date           DateTime @default(now())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tasks          Task[]
+  completedTasks Task[]   @relation("CompletedTasks")
+
+  @@index([userId])
+  @@index([date])
+}
+
+model Task {
+  id             String      @id @default(uuid())
+  description    String
+  timeFrom       DateTime
+  timeTo         DateTime
+  dailyTasksId   String
+  dailyTasks     DailyTasks  @relation(fields: [dailyTasksId], references: [id], onDelete: Cascade)
+  isCompleted    Boolean     @default(false)
+  completedOn    DateTime?
+  completedTasks DailyTasks? @relation("CompletedTasks", fields: [dailyTasksId], references: [id], map: "CompletedTasks_dailyTasksId_fkey")
+
+  @@index([dailyTasksId])
+}
+
+model Journal {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum SenderRole {
+  USER
+  DOCTOR
+}
+
+enum PostCategory {
+  GENERAL
+  QUESTION
+  EXPERIENCE
+  ADVICE_REQUEST
+  SUCCESS_STORY
+  MEDICAL_INFO
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
