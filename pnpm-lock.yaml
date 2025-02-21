@@ -8,12 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@clerk/clerk-react':
-        specifier: ^5.23.0
-        version: 5.23.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      '@clerk/nextjs':
-        specifier: ^6.11.3
-        version: 6.11.3(next@15.1.6(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@google/generative-ai':
         specifier: ^0.21.0
         version: 0.21.0
