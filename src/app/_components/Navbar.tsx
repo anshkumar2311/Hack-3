@@ -21,6 +21,8 @@ export default function Navbar({ className }: NavbarProps) {
             <div className="flex gap-4">
                 <GradientButton className="rounded-xl border-gray-500 border" link="/">Home</GradientButton>
                 <GradientButton className="rounded-xl border-gray-500 border" link='/doc-dashboard'>Zen Space</GradientButton>
+                <GradientButton className="rounded-xl border-gray-500 border" link='/Sukku'>Sukku</GradientButton>
+                <GradientButton className="rounded-xl border-gray-500 border" link="/Bhagvat">AI Bhagvat</GradientButton>
                 <GradientButton className="rounded-xl border-gray-500 border" link="/social">Community</GradientButton>
                 {/* <GradientButton className="rounded-xl border-gray-500 border" link='/doctors'>Sessions</GradientButton> */}
                 <GradientButton className="rounded-xl border-gray-500 border" link='/Wound'>Heal AI</GradientButton>

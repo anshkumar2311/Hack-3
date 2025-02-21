@@ -25,7 +25,7 @@ export function Footer() {
     <footer className="border-t w-full overflow-hidden bg-black text-white px-24 ">
       <div className="container py-8">
         <div className="grid gap-1 sm:grid-cols-2 lg:grid-cols-5">
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 ">
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -37,13 +37,13 @@ export function Footer() {
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, duration: 0.4 }}
               >
-                <Image
+                {/* <Image
                   unoptimized
                   src="/videos/t-rex.gif"
                   width={50}
                   height={50}
                   alt="T-Rex Logo"
-                />
+                /> */}
               </motion.div>
               <div className="flex flex-col">
                 <motion.h1
@@ -52,7 +52,7 @@ export function Footer() {
                   transition={{ delay: 0.3, duration: 0.5 }}
                   className="text-3xl font-extrabold"
                 >
-                  
+
                   <span
                     className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-pink-500"
                     style={{
@@ -94,6 +94,14 @@ export function Footer() {
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} Sukoon. All rights reserved.
             </p>
+            <div className="flex space-x-4">
+              <a href="/Privacy" className="text-sm text-muted-foreground hover:underline">
+          Privacy
+              </a>
+              <a href="/Terms" className="text-sm text-muted-foreground hover:underline">
+          Terms and Conditions
+              </a>
+            </div>
           </div>
         </div>
       </div>

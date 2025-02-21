@@ -87,13 +87,14 @@ export default function Home() {
   }, [page]);
 
   return (
-    <div className="min-h-full bg-background">
+    <div className="min-h-full bg-black">
       <main className="max-w-2xl mx-auto p-4">
         <div className="space-y-4">
           {posts.map((post, index) => (
             <div
               key={post.id}
               ref={index === posts.length - 1 ? lastPostElementRef : undefined}
+              className="bg-black text-white p-4 rounded-lg"
             >
               <PostCard {...post} />
             </div>

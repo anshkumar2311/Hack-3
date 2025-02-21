@@ -16,7 +16,7 @@ export function FooterSection({ title, links, delay = 0 }: FooterSectionProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay }}
         >
-            <h3 className="mb-4 text-sm font-semibold text-foreground">{title}</h3>
+            <h3 className="mb-4 text-sm font-semibold text-white">{title}</h3>
             <ul className="space-y-3 text-sm text-muted-foreground">
                 {links.map((link) => (
                     <li key={link.label}>

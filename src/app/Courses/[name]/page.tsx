@@ -163,7 +163,7 @@ export default function Page({ params }: { params: { name: string } }) {
     }, [name]);
 
     return (
-        <div className="around bg-black" style={{ backgroundColor: 'black' }}>
+        <div className="around bg-black text-white" style={{ backgroundColor: 'black' }}>
             <Toaster />
             {progress < 110 ? (
                 <>
